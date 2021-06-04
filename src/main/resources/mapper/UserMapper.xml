@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="priv.blog.dao.UserMapper">
+  <resultMap id="BaseResultMap" type="priv.blog.pojo.User">
+    <!--@mbg.generated-->
+    <!--@Table `user`-->
+    <id column="uuid" jdbcType="INTEGER" property="uuid" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="nickname" jdbcType="VARCHAR" property="nickname" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="date" jdbcType="DATE" property="date" />
+    <result column="sex" jdbcType="VARCHAR" property="sex" />
+    <result column="userinfo" jdbcType="LONGVARCHAR" property="userinfo" />
+    <result column="authority" jdbcType="INTEGER" property="authority" />
+    <result column="verification" jdbcType="INTEGER" property="verification" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    uuid, username, nickname, `password`, `date`, sex, userinfo, authority, verification
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <!--@mbg.generated-->
+    select 
+    <include refid="Base_Column_List" />
+    from `user`
+    where uuid = #{uuid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <!--@mbg.generated-->
+    delete from `user`
+    where uuid = #{uuid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="uuid" keyProperty="uuid" parameterType="priv.blog.pojo.User" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into `user` (username, nickname, `password`, 
+      `date`, sex, userinfo, 
+      authority, verification)
+    values (#{username,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{date,jdbcType=DATE}, #{sex,jdbcType=VARCHAR}, #{userinfo,jdbcType=LONGVARCHAR}, 
+      #{authority,jdbcType=INTEGER}, #{verification,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" keyColumn="uuid" keyProperty="uuid" parameterType="priv.blog.pojo.User" useGeneratedKeys="true">
+    <!--@mbg.generated-->
+    insert into `user`
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="username != null">
+        username,
+      </if>
+      <if test="nickname != null">
+        nickname,
+      </if>
+      <if test="password != null">
+        `password`,
+      </if>
+      <if test="date != null">
+        `date`,
+      </if>
+      <if test="sex != null">
+        sex,
+      </if>
+      <if test="userinfo != null">
+        userinfo,
+      </if>
+      <if test="authority != null">
+        authority,
+      </if>
+      <if test="verification != null">
+        verification,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="nickname != null">
+        #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="date != null">
+        #{date,jdbcType=DATE},
+      </if>
+      <if test="sex != null">
+        #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="userinfo != null">
+        #{userinfo,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="authority != null">
+        #{authority,jdbcType=INTEGER},
+      </if>
+      <if test="verification != null">
+        #{verification,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="priv.blog.pojo.User">
+    <!--@mbg.generated-->
+    update `user`
+    <set>
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="nickname != null">
+        nickname = #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        `password` = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="date != null">
+        `date` = #{date,jdbcType=DATE},
+      </if>
+      <if test="sex != null">
+        sex = #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="userinfo != null">
+        userinfo = #{userinfo,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="authority != null">
+        authority = #{authority,jdbcType=INTEGER},
+      </if>
+      <if test="verification != null">
+        verification = #{verification,jdbcType=INTEGER},
+      </if>
+    </set>
+    where uuid = #{uuid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="priv.blog.pojo.User">
+    <!--@mbg.generated-->
+    update `user`
+    set username = #{username,jdbcType=VARCHAR},
+      nickname = #{nickname,jdbcType=VARCHAR},
+      `password` = #{password,jdbcType=VARCHAR},
+      `date` = #{date,jdbcType=DATE},
+      sex = #{sex,jdbcType=VARCHAR},
+      userinfo = #{userinfo,jdbcType=LONGVARCHAR},
+      authority = #{authority,jdbcType=INTEGER},
+      verification = #{verification,jdbcType=INTEGER}
+    where uuid = #{uuid,jdbcType=INTEGER}
+  </update>
+
+<!--auto generated by MybatisCodeHelper on 2021-04-17-->
+  <select id="selectByUsername" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from `user`
+    where username=#{username,jdbcType=VARCHAR}
+  </select>
+
+<!--auto generated by MybatisCodeHelper on 2021-04-18-->
+  <insert id="insertList" useGeneratedKeys="true" keyProperty="uuid">
+    INSERT INTO `user`(
+    username,
+    nickname,
+    password,
+    date,
+    sex,
+    userinfo,
+    authority,
+    verification
+    )VALUES
+    <foreach collection="list" item="element" index="index" separator=",">
+      (
+      #{element.username,jdbcType=VARCHAR},
+      #{element.nickname,jdbcType=VARCHAR},
+      #{element.password,jdbcType=VARCHAR},
+      #{element.date,jdbcType=DATE},
+      #{element.sex,jdbcType=VARCHAR},
+      #{element.userinfo,jdbcType=LONGVARCHAR},
+      #{element.authority,jdbcType=INTEGER},
+      #{element.verification,jdbcType=INTEGER}
+      )
+    </foreach>
+  </insert>
+
+  <insert id="autoIncrement">
+    alter table ${tablesName} <!--$sqluser--> auto_increment = 1
+  </insert>
+
+  <select id="returnUserData" resultMap="BaseResultMap">
+    select * from user where uuid = #{uuid}
+    </select>
+
+<!--auto generated by MybatisCodeHelper on 2021-06-01-->
+  <select id="selectAllByUsernameAndPasswordAndAuthority" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from `user`
+    where username=#{username,jdbcType=VARCHAR} and `password`=#{password,jdbcType=VARCHAR} and
+    authority=#{authority,jdbcType=INTEGER}
+  </select>
+
+<!--auto generated by MybatisCodeHelper on 2021-06-02-->
+  <select id="countAll" resultType="java.lang.Integer">
+        select count(1)
+        from `user`
+    </select>
+
+<!--auto generated by MybatisCodeHelper on 2021-06-02-->
+  <select id="countByAuthority" resultType="java.lang.Integer">
+    select count(1)
+    from `user`
+    where authority=#{authority,jdbcType=INTEGER}
+  </select>
+
+<!--auto generated by MybatisCodeHelper on 2021-06-03-->
+  <select id="selectByAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from `user`
+    </select>
+</mapper>

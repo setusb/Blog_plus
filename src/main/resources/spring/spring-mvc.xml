@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns="http://www.springframework.org/schema/beans" xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <!-- 开启SpringMVC注解驱动 -->
+    <mvc:annotation-driven/>
+
+    <!-- 静态资源默认servlet配置-->
+    <mvc:default-servlet-handler/>
+
+    <!-- 配置jsp 显示ViewResolver视图解析器 -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+        <property name="prefix" value="/WEB-INF/jsp/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <!-- 扫描web相关的bean -->
+    <context:component-scan base-package="priv.blog.controller"/>
+
+    <!--配置拦截器-->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/default/**"/>
+            <bean class="priv.blog.interceptor.DefaultInterceptor"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/article/**"/>
+            <bean class="priv.blog.interceptor.DefaultInterceptor"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/search/**"/>
+            <bean class="priv.blog.interceptor.DefaultInterceptor"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/message/**"/>
+            <bean class="priv.blog.interceptor.DefaultInterceptor"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/pageArticle/**"/>
+            <bean class="priv.blog.interceptor.DefaultInterceptor"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/pageArticles/**"/>
+            <bean class="priv.blog.interceptor.DefaultInterceptor"/>
+        </mvc:interceptor>
+
+        <!--注册拦截器-->
+        <mvc:interceptor>
+            <mvc:mapping path="/requestRegister"/>
+            <bean class="priv.blog.interceptor.RegisterInterceptor"/>
+        </mvc:interceptor>
+
+        <!--后台拦截器-->
+        <mvc:interceptor>
+            <mvc:mapping path="/backstagelogin"/>
+            <bean class="priv.blog.interceptor.BackStageLogin"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/backstageindex/**"/>
+            <bean class="priv.blog.interceptor.BackStageIndex"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+</beans>
