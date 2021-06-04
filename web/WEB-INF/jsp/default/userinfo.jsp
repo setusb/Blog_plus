@@ -17,7 +17,7 @@
 
 <html>
 <head>
-    <title>个人博客 - 修改信息</title>
+    <title>个人博客 - 个人中心</title>
 </head>
 <body>
 <ul class="ul_point">
@@ -199,12 +199,13 @@
             </button>
         </div>
     </div>
-    <div class="s3">
+    <div class="s3" style="overflow: scroll;overflow-x:hidden;">
         <table class="tb1" border="1">
             <tr class="tr1">
                 <td>文章编号</td>
                 <td>文章标题</td>
                 <td>文章点赞</td>
+                <td>文章评论</td>
                 <td>文章状态</td>
                 <td colspan="2">操作</td>
             </tr>
@@ -213,6 +214,7 @@
                     <td>${item.articleUuid}</td>
                     <td>${item.articleTitle}</td>
                     <td>${item.articlePoints}</td>
+                    <td>${item.critiqueCount}</td>
                     <td>
                         <c:if test="${item.articleBan == 1}">待审核</c:if>
                         <c:if test="${item.articleBan == 0}">已发布</c:if>
@@ -231,13 +233,13 @@
             </c:forEach>
         </table>
 
-        <div class="pagination">
+<%--        <div class="pagination">
             <ul class="pagination_ul">
                 <a href="/pageArticles/0" title="首部">
                     <li><</li>
                 </a>
                 <c:forEach items="${pageNum}" var="item">
-                    <%--<li class="lister"><a href="/pageArticle/${item.page}">${item.page+1}</a></li>--%>
+                    &lt;%&ndash;<li class="lister"><a href="/pageArticle/${item.page}">${item.page+1}</a></li>&ndash;%&gt;
                     <a href="/pageArticles/${item.page}">
                         <li class="lister">${item.page+1}</li>
                     </a>
@@ -246,7 +248,7 @@
                     <li>></li>
                 </a>
             </ul>
-        </div>
+        </div>--%>
     </div>
 
     <div class="s4">
@@ -278,23 +280,40 @@
 <script>
 
     function articleDelete(uuid) {
-        $.ajax({
-            async: false,
-            type: "POST",
-            url: "/default/articleDelete",
-            contentType: "application/x-www-form-urlencoded; charset=utf-8",
-            dataType: "json",
-            data: {
-                "uuid": uuid
-            },
-            success: function (response) {
-                if (response['flag']) {
-                    location.reload();
-                } else {
-                    alert("删除失败，请联系管理员")
+
+        layui.use('layer', function () {
+            var layer = layui.layer;
+            var s = layer.open({
+                content: "你确定要删除这篇文章吗？",
+                title: '删除文章',
+                offset: '120px',
+                btn: ['删除', '手滑了']
+                , yes: function (index, layero) {
+                    //按钮【按钮一】的回调
+                    $.ajax({
+                        async: false,
+                        type: "POST",
+                        url: "/default/articleDelete",
+                        contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                        dataType: "json",
+                        data: {
+                            "uuid": uuid
+                        },
+                        success: function (response) {
+                            if (response['flag']) {
+                                location.reload();
+                            } else {
+                                layer.close(s);
+                                layer.alert("删除失败，请联系管理员");
+                            }
+                        }
+                    });
                 }
-            }
-        })
+                , btn2: function (index, layero) {
+                    layer.close(s);
+                }
+            });
+        });
     }
 
     function postManagement() {
@@ -804,7 +823,7 @@
 
     .s3 {
         width: 920px;
-        min-height: 600px;
+        height: 600px;
         margin: 10px 0;
         float: right;
         box-shadow: 0 0 10px gray;
@@ -915,6 +934,24 @@
         box-shadow: 0 0 10px gray;
         animation-delay: 2s;
         transform: scale(1.5);
+    }
+
+    .s3::-webkit-scrollbar {/*滚动条整体样式*/
+        width: 6px;     /*高宽分别对应横竖滚动条的尺寸*/
+        height: 4px;
+        scrollbar-arrow-color:red;
+
+    }
+    .s3::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+        border-radius: 5px;
+        -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+        background: rgba(0,0,0,0.2);
+        scrollbar-arrow-color:red;
+    }
+    .s3::-webkit-scrollbar-track {/*滚动条里面轨道*/
+        -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+        border-radius: 0;
+        background: rgba(0,0,0,0.1);
     }
 </style>
 </html>

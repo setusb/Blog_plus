@@ -58,6 +58,15 @@ public interface CritiqueMapper {
     Integer uuiduserComments(@Param("uuid") int uuid);
 
     /**
+     * 通过文章uuid查询文章下的评论数量
+     *
+     * @return 数量
+     */
+    Integer countByUuidArticle(@Param("uuidArticle")Integer uuidArticle);
+
+
+
+    /**
      * 通过uuid删除用户的所有评论
      *
      * @return 是否删除成功

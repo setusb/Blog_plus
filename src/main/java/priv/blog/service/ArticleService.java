@@ -133,18 +133,18 @@ public interface ArticleService {
     /**
      * 自己的文章条数
      *
-     * @param ban 文章是否被封禁
+     * @param ban  文章是否被封禁
      * @param uuid 用户id
      * @return 大小
-     * */
-    Integer numberOfArticless(int ban,int uuid);
+     */
+    Integer numberOfArticless(int ban, int uuid);
 
     /**
      * 通过uuid删除评论
      *
      * @param uuidCritique 评论唯一id
      * @return 是否删除成功
-     * */
+     */
     int deleteByUuidCritique(Integer uuidCritique);
 
     /**
@@ -152,7 +152,7 @@ public interface ArticleService {
      *
      * @param uuidArticle 文章唯一id
      * @return 是否删除成功
-     * */
+     */
     int deleteByUuidArticle(Integer uuidArticle);
 
     /**
@@ -205,4 +205,11 @@ public interface ArticleService {
      * @return 是否删除成功
      */
     int deleteByUuidUser(Integer uuidUser);
+
+    /**
+     * 通过文章uuid查询文章下的评论数量
+     *
+     * @return 数量
+     */
+    Integer countByUuidArticle(Integer uuidArticle);
 }

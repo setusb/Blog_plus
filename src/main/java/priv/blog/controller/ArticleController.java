@@ -5,7 +5,10 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import priv.blog.pojo.*;
 import priv.blog.service.ArticleService;
 import priv.blog.service.UserService;
@@ -186,7 +189,7 @@ public class ArticleController {
 
                 CritiqueDisplay critiqueDisplay = new CritiqueDisplay();
                 critiqueDisplay.setUuidUser(critique.getUuidUser());
-/*                System.out.println(critique.getUuidUser());*/
+                /*                System.out.println(critique.getUuidUser());*/
                 critiqueDisplay.setUserName(userService.returnUserData(critique.getUuidUser()).getUsername());
                 critiqueDisplay.setNickName(userService.returnUserData(critique.getUuidUser()).getNickname());
                 critiqueDisplay.setCritiqueContent(critique.getContentCritique());
@@ -215,14 +218,16 @@ public class ArticleController {
      * 用于跳转用户信息修改
      * <p>
      * 废弃！
+     * <p>
+     * 重新启动！！！
      */
     @RequestMapping(path = "/default/userinfo")
     public String userInfo(HttpSession session, Model model) {
         int uuid = (int) session.getAttribute("loginSuccessful");
 
 
-        /*List<Article> list = articleService.selectAllByUuid(uuid);*/
-        List<Article> list = articleService.paginationOfArticless(uuid, 0, 10, 0);
+        List<Article> list = articleService.selectAllByUuid(uuid);
+        /*        List<Article> list = articleService.paginationOfArticless(uuid, 0, 10, 0);*/
 
         return titleLengthLimit(model, uuid, list);
     }
@@ -233,6 +238,7 @@ public class ArticleController {
                 String aas = article.getArticleTitle().substring(0, 20);
                 article.setArticleTitle(aas + "...");
             }
+            article.setCritiqueCount(articleService.countByUuidArticle(article.getArticleUuid()));
         }
 
         model.addAttribute("article", list);
@@ -265,9 +271,8 @@ public class ArticleController {
         int s = articleService.deleteByPrimaryKey(uuid);
 
         if (s == 1) {
-            if (articleService.deleteByUuidArticle(uuid) > 0) {
-                hashMap.put("flag", true);
-            }
+            articleService.deleteByUuidArticle(uuid);
+            hashMap.put("flag", true);
         } else {
             hashMap.put("flag", false);
         }
@@ -319,7 +324,7 @@ public class ArticleController {
      * 搜索文章
      */
     @RequestMapping(path = "/search/{title}")
-    public String search(@PathVariable String title, Model model,HttpSession session) {
+    public String search(@PathVariable String title, Model model, HttpSession session) {
 
         List<Article> list = articleService.articleSelectAllByArticleTitle(title);
 
@@ -380,7 +385,7 @@ public class ArticleController {
      * 分页查询
      */
     @RequestMapping(path = "/pageArticle/{page}", method = RequestMethod.GET)
-    public String pageArticle(@PathVariable("page") int pageMin, Model m,HttpSession session) {
+    public String pageArticle(@PathVariable("page") int pageMin, Model m, HttpSession session) {
         int as = pageMin * 5;
 
         List<Article> article = articleService.paginationOfArticles(as, 5, 0);
@@ -432,16 +437,19 @@ public class ArticleController {
 
     /**
      * 修改信息分页查询
+     * <p>
+     * 废弃
      */
     @RequestMapping(path = "/pageArticles/{page}", method = RequestMethod.GET)
     public String pageArticles(@PathVariable("page") int pageMin, Model model, HttpSession session) {
-        int uuid = (int) session.getAttribute("loginSuccessful");
+/*        int uuid = (int) session.getAttribute("loginSuccessful");
 
         int as = pageMin * 10;
 
         List<Article> list = articleService.paginationOfArticlesss(uuid, as, 10);
 
-        return titleLengthLimit(model, uuid, list);
+        return titleLengthLimit(model, uuid, list);*/
+        return "warning/101";
     }
 
     /**

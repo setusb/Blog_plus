@@ -54,4 +54,9 @@ public class Article {
     * 文章时间
     */
     private Date articleDate;
+
+    /**
+     * 评论数量
+     */
+    private Integer critiqueCount;
 }

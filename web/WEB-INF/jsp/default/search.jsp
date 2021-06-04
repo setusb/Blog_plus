@@ -12,7 +12,7 @@
 <head>
     <title>个人博客 - 文章搜索</title>
 </head>
-<body>
+<body class="gradient-pattern">
 <ul class="ul_point">
     <span></span>
 </ul>
@@ -40,7 +40,7 @@
                                         class="layui-nav-img"><span id="unames">null</span></a>
         <dl class="layui-nav-child">
             <%--<dd><a href="/default/userinfo">个人信息</a></dd>--%>
-            <dd><a href="/pageArticles/0">个人信息</a></dd>
+            <dd><a href="/default/userinfo"">个人信息</a></dd>
             <dd><a href="#">安全管理</a></dd>
             <c:if test="${abc == 2}">
                 <dd><a href="/backstagelogin" style="color: blueviolet">博客后台</a></dd>
@@ -223,7 +223,6 @@
         position: absolute;
         top: 0;
         font: normal 100%/normal Arial, Helvetica, sans-serif;
-        color: rgba(255,255,255,1);
         -o-text-overflow: clip;
         text-overflow: clip;
         background: -webkit-linear-gradient(45deg, rgba(0,0,0,0.0980392) 25%, rgba(0,0,0,0) 25%, rgba(0,0,0,0) 75%, rgba(0,0,0,0.0980392) 75%, rgba(0,0,0,0.0980392) 0), -webkit-linear-gradient(45deg, rgba(0,0,0,0.0980392) 25%, rgba(0,0,0,0) 25%, rgba(0,0,0,0) 75%, rgba(0,0,0,0.0980392) 75%, rgba(0,0,0,0.0980392) 0), rgb(255, 255, 255);

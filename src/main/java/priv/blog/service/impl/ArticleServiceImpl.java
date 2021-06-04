@@ -83,6 +83,11 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
+    public Integer countByUuidArticle(Integer uuidArticle) {
+        return critiqueMapper.countByUuidArticle(uuidArticle);
+    }
+
+    @Override
     public List<Article> paginationOfArticlesss(int uuid, int pageMin, int pageMax) {
         return articleMapper.paginationOfArticlesss(uuid, pageMin, pageMax);
     }

@@ -25,7 +25,7 @@
                         </li>--%>
 
             <li class="layui-nav-item"><a href="/index">博客主页</a></li>
-            <li class="layui-nav-item"><a href="/pageArticles/0">个人中心</a></li>
+            <li class="layui-nav-item"><a href="/default/userinfo">个人中心</a></li>
             <li class="layui-nav-item"><a href="">安全管理</a></li>
             <li class="layui-nav-item">
                 <a href="javascript:">更多</a>
