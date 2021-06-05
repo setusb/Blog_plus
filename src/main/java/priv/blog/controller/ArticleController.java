@@ -388,8 +388,16 @@ public class ArticleController {
     public String pageArticle(@PathVariable("page") int pageMin, Model m, HttpSession session) {
         int as = pageMin * 5;
 
-        List<Article> article = articleService.paginationOfArticles(as, 5, 0);
-        judgeCharacterLengthCycleProcessing(m, article);
+        try {
+            List<Article> article = articleService.paginationOfArticles(as, 5, 0);
+            if (article.size() == 0) {
+                return "warning/404";
+            }
+            judgeCharacterLengthCycleProcessing(m, article);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "warning/404";
+        }
 
         return judgingTheAdministrator(m, session);
     }

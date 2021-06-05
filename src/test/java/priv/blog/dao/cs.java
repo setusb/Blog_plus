@@ -1,21 +1,18 @@
 package priv.blog.dao;
 
 import cn.hutool.core.convert.Convert;
-import com.alibaba.fastjson.JSON;
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import oshi.SystemInfo;
 import priv.blog.pojo.Article;
 import priv.blog.pojo.Page;
-import priv.blog.pojo.User;
-import priv.blog.service.UserService;
 import priv.blog.service.impl.ArticleServiceImpl;
 
-import java.sql.Array;
 import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.jar.JarEntry;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author setusb
@@ -128,5 +125,34 @@ public class cs {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String sd = sdf.format(new Date(Long.parseLong("1621872000000")));
         System.out.println(sd);
+    }
+
+    @Test
+    public void ts2() throws Exception {
+/*        int a = 1;
+        long b = 1;
+
+        String c = "1";
+        String d = "1";
+        Integer a1 = a;
+
+        System.out.println(true);
+
+        System.out.println("Collection");
+        Vector vector = new Vector(10);
+        vector.add("123");
+        System.out.println(vector.get(0));;*/
+
+        LinkedList<String> list = new LinkedList<>();
+        list.add(0, "a");
+        list.add(1, "ab");
+        System.out.println(list.get(1));
+        int[] arr = {1, 2, 3, 4};
+
+        try {
+            Thread.sleep(1000);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

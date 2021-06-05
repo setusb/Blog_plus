@@ -282,7 +282,7 @@
 
         var sb = ${article.size()};
         if (sb === 0) {
-            window.location.href = "/pageNotFound"
+/*            window.location.href = "/pageNotFound"*/
         }
 
 

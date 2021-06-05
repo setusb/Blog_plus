@@ -71,7 +71,7 @@
                     <a href="javascript:">数据操作</a>
                     <dl class="layui-nav-child">
                         <dd><a href="/backstageindex/usermanagement">用户管理</a></dd>
-                        <dd><a href="javascript:">文章管理</a></dd>
+                        <dd><a href="/backstageindex/articlemanagement">文章管理</a></dd>
                         <dd><a href="javascript:">评论管理</a></dd>
                         <dd><a href="javascript:">留言管理</a></dd>
                     </dl>

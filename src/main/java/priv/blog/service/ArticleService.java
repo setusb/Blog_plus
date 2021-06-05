@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Param;
 import priv.blog.pojo.Article;
 import priv.blog.pojo.Critique;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -212,4 +213,54 @@ public interface ArticleService {
      * @return 数量
      */
     Integer countByUuidArticle(Integer uuidArticle);
+
+    /**
+     * 查询全部文章（无ban)
+     *
+     * @return list数组
+     */
+    List<Article> searchAllArticles();
+
+    /**
+     * 文章修改功能
+     *
+     * @param uuid 文章uuid
+     * @param title 文章标题
+     * @param target 文章简介
+     * @param content 文章内容
+     *
+     * @return 0，1，2数字判断
+     */
+    Integer articleRevision(int uuid,String title,String target,String content);
+
+    /**
+     * 文章删除功能（单个）
+     *
+     * @param uuid 文章uuid
+     *
+     * @return 是否删除成功
+     */
+    boolean deleteArticle(int uuid);
+
+    /**
+     * 文章添加功能（单个）
+     *
+     * @param title 标题
+     * @param target 简介
+     * @param content 内容
+     * @param session session
+     *
+     * @return 是否添加成功
+     */
+    boolean adminAddArticle(String title, String target, String content, HttpSession session);
+
+    /**
+     * 文章审核功能
+     *
+     * @param uuid 文章uuid
+     * @param is 0 通过 1 未批
+     *
+     * @return 是否审核成功
+     */
+    boolean articleReviewAndRevision(int uuid, int is);
 }

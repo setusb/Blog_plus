@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import oshi.SystemInfo;
+import priv.blog.pojo.Article;
 import priv.blog.pojo.User;
 import priv.blog.service.ArticleService;
 import priv.blog.service.MessageService;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -257,7 +259,7 @@ public class BackStageController {
         return JSON.toJSONString(hashMap);
     }
 
-    @PostMapping("/backstageuserdeletemulti")
+    @PostMapping("/backstageuser/deletemulti")
     @ResponseBody
     public String userDeleteMulti(@Param("uuid") int uuid) {
         ConcurrentHashMap<String, Object> hashMap = new ConcurrentHashMap<>(10);
@@ -285,6 +287,105 @@ public class BackStageController {
                 }
             }
         }
+        return JSON.toJSONString(hashMap);
+    }
+
+    @GetMapping("/backstageindex/articlemanagement")
+    public String articleManagement(HttpSession session, Model model) {
+        String username = (String) session.getAttribute("admin");
+        model.addAttribute("username", username);
+        return "backstage/articleManagement";
+    }
+
+    @GetMapping("/backstageindex/articlelist")
+    @ResponseBody
+    public String articleList() {
+        HashMap<String, Object> hashMap = new HashMap<>(10);
+
+        List<Article> list = articleService.searchAllArticles();
+
+        hashMap.put("code", 0);
+        hashMap.put("msg", "");
+        hashMap.put("count", userService.countAll());
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+        for (Article article : list) {
+            article.setDateString(sdf.format(new Date(String.valueOf(article.getArticleDate()))));
+            if (article.getArticleBan() == 0) {
+                article.setCheck("通过");
+            } else if (article.getArticleBan() == 1) {
+                article.setCheck("未批");
+            }
+            article.setCritiqueCount(articleService.countByUuidArticle(article.getArticleUuid()));
+            User user = userService.returnUserData(article.getUuid());
+            article.setArticleusername(user.getUsername());
+        }
+        hashMap.put("data", list);
+
+        return JSON.toJSONString(hashMap);
+    }
+
+    @PostMapping("/backstageindex/articlemodification")
+    @ResponseBody
+    public String artcleModification(@Param("uuid") int uuid, @Param("title") String title, @Param("target") String target, @Param("content") String content) {
+        //Hashtable 是线程安全的，但是慢，我之所以使用Hashtable而不是使用ConcurrentHashMap
+        //就是因为我想了解下Hashtable
+        Hashtable<String, Object> hashtable = new Hashtable<>(5);
+
+        int i = articleService.articleRevision(uuid, title, target, content);
+
+        switch (i) {
+            case 0:
+                hashtable.put("a", true);
+                break;
+            case 1:
+            default:
+                hashtable.put("a", false);
+                break;
+        }
+        return JSON.toJSONString(hashtable);
+    }
+
+    @PostMapping("/backstageindex/articledelete")
+    @ResponseBody
+    public String articleDelete(@Param("uuid") int uuid) {
+        HashMap<String, Object> hashMap = new HashMap<>(1);
+
+        if (articleService.deleteArticle(uuid)) {
+            hashMap.put("a", true);
+        } else {
+            hashMap.put("a", false);
+        }
+
+        return JSON.toJSONString(hashMap);
+    }
+
+    @PostMapping("/backstageindex/articleadd")
+    @ResponseBody
+    public String articleAdd(HttpSession session,@Param("title") String title, @Param("target") String target, @Param("content") String content) {
+        HashMap<String, Object> hashMap = new HashMap<>(1);
+
+        if (articleService.adminAddArticle(title, target, content, session)) {
+            hashMap.put("a", true);
+        } else {
+            hashMap.put("a", false);
+        }
+
+        return JSON.toJSONString(hashMap);
+    }
+
+    @PostMapping("/backstageindex/articlereview")
+    @ResponseBody
+    public String articleReview(@Param("uuid") int uuid, @Param("is") int is) {
+        HashMap<String, Object> hashMap = new HashMap<>(1);
+
+        if (articleService.articleReviewAndRevision(uuid, is)) {
+            hashMap.put("a", true);
+        } else {
+            hashMap.put("a", false);
+        }
+
         return JSON.toJSONString(hashMap);
     }
 }

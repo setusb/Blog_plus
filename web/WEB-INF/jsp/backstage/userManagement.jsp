@@ -71,7 +71,7 @@
                     <a href="javascript:">数据操作</a>
                     <dl class="layui-nav-child">
                         <dd><a href="/backstageindex/usermanagement" style="color: #978502">用户管理</a></dd>
-                        <dd><a href="javascript:">文章管理</a></dd>
+                        <dd><a href="/backstageindex/articlemanagement">文章管理</a></dd>
                         <dd><a href="javascript:">评论管理</a></dd>
                         <dd><a href="javascript:">留言管理</a></dd>
                     </dl>
@@ -158,7 +158,7 @@
             elem: '#test'
             , url: '/backstageindex/userlist'
             , toolbar: '#toolbarDemo'
-            , height: '404px'
+            , height: '558px'
             , cols: [[
                 {type: 'checkbox', width: 60, unresize: true},
                 {field: 'uuid', width: 80, title: 'uuid', sort: true, unresize: true}
@@ -186,7 +186,7 @@
                     '<br/>' +
                     '该用户的文章、评论、留言也将一并删除！', function (index) {
                     layer.close(index);
-                    deleteUser(obj.data.uuid, obj);
+                    deleteUser(obj.data.uuid, obj, table);
                 });
             } else if (obj.event === 'edit') {
                 var setb = layer.open({
@@ -310,7 +310,7 @@
                     } else if (data.length > 0) {
                         $.each(data, function (index, obj) {
                             //多删除操作
-                            deleteMore(obj.uuid, index);
+                            deleteMore(obj.uuid, index, table);
                         });
                         break;
                     }
@@ -426,10 +426,10 @@
         });
     });
 
-    function deleteMore(uuid, obj) {
+    function deleteMore(uuid, obj, table) {
         $.ajax({
             type: "POST",
-            url: "/backstageuserdeletemulti",
+            url: "/backstageuser/deletemulti",
             contentType: "application/x-www-form-urlencoded; charset=utf-8",
             data: {
                 "uuid": uuid,
@@ -442,9 +442,10 @@
                     layer.close(obj);
                 }
                 if (response['a']) {
-                    layer.confirm("删除成功,是否重载表格数据！", function () {
-                        layer.close(obj);
+                    layer.confirm("删除成功,是否重载表格数据！", function (index) {
                         table.reload('test');
+                        layer.close(obj);
+                        layer.close(index)
                     });
                 } else {
                     if (response['info'] != null) {
@@ -460,7 +461,7 @@
         });
     }
 
-    function deleteUser(uuid, obj) {
+    function deleteUser(uuid, obj, table) {
         $.ajax({
             type: "POST",
             url: "/backstageindex/userdelete",
@@ -477,8 +478,8 @@
                     if (response['a']) {
                         obj.del();
                         layer.confirm('删除成功，是否重载表格数据', function (index) {
-                            layer.close(index);
                             table.reload('test');
+                            layer.close(index);
                         });
                     } else {
                         layer.alert("删除失败，请勿重复删除！")

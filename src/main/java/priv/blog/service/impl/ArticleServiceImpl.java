@@ -1,5 +1,6 @@
 package priv.blog.service.impl;
 
+import cn.hutool.core.convert.Convert;
 import priv.blog.dao.ArticleMapper;
 import priv.blog.dao.CritiqueMapper;
 import priv.blog.dao.UserMapper;
@@ -7,6 +8,8 @@ import priv.blog.pojo.Article;
 import priv.blog.pojo.Critique;
 import priv.blog.service.ArticleService;
 
+import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -131,7 +134,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public Integer numberOfArticless(int ban, int uuid) {
-        return articleMapper.numberOfArticless(ban,uuid);
+        return articleMapper.numberOfArticless(ban, uuid);
     }
 
     @Override
@@ -179,6 +182,109 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public List<Article> articleSelectAllByArticleTitle(String articleTitle) {
         return articleMapper.selectAllByArticleTitle(articleTitle);
+    }
+
+    @Override
+    public boolean deleteArticle(int uuid) {
+        return articleMapper.deleteByPrimaryKey(uuid) > 0;
+    }
+
+    @Override
+    public boolean adminAddArticle(String title, String target, String content, HttpSession session) {
+
+        Article article = new Article();
+
+        article.setArticleTitle(title);
+        article.setArticleTarget(target);
+        article.setArticleContent(content);
+        article.setArticleDate(new Date());
+        article.setUuid(Convert.toInt(session.getAttribute("loginSuccessful")));
+        article.setArticleBan(0);
+        article.setArticlePoints(0);
+
+        return articleMapper.insertSelective(article) > 0;
+    }
+
+    @Override
+    public boolean articleReviewAndRevision(int uuid, int is) {
+        Article article = new Article();
+        article.setArticleUuid(uuid);
+        article.setArticleBan(is);
+        return articleMapper.updateByPrimaryKeySelective(article) > 0;
+    }
+
+    @Override
+    public Integer articleRevision(int uuid, String title, String target, String content) {
+        //返回0的情况：修改成功
+        //返回1的情况：未修改
+        //返回2的情况：修改失败，异常定位
+
+        //获取数据库未修改的文章信息，存入list数组
+
+        Article article = new Article();
+        article.setArticleUuid(uuid);
+        article.setArticleTitle(title);
+        article.setArticleTarget(target);
+        article.setArticleContent(content);
+
+        try {
+            if (articleMapper.updateByPrimaryKeySelective(article) > 0) {
+                return 0;
+            } else {
+                return 1;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 2;
+        }
+
+        //脑子抽了，才能想到这样判断！！！
+
+/*        List<Article> list = articleMapper.selectAllByUuid(uuid);
+        int i = 0;
+
+        for (Article article : list) {
+            if (article.getArticleTitle().equalsIgnoreCase(title)) {
+                i++;
+            } else {
+                article.setArticleTitle(title);
+            }
+
+            if (article.getArticleTarget().equalsIgnoreCase(target)) {
+                i++;
+            } else {
+                article.setArticleTarget(target);
+            }
+
+            if (article.getArticleContent().equalsIgnoreCase(content)) {
+                i++;
+            } else {
+                article.setArticleContent(content);
+            }
+
+            if (i != 0) {
+                return 1;
+            }
+
+            try {
+                if (articleMapper.updateByPrimaryKeySelective(article) > 0) {
+                    return 0;
+                } else {
+                    System.out.println("未修改成功");
+                    return 1;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return 2;
+            }
+        }
+
+        return 0;*/
+    }
+
+    @Override
+    public List<Article> searchAllArticles() {
+        return articleMapper.searchAllArticles();
     }
 
     @Override

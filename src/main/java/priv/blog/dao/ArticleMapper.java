@@ -1,4 +1,5 @@
 package priv.blog.dao;
+import java.util.Date;
 
 import org.apache.ibatis.annotations.Param;
 import priv.blog.pojo.Article;
@@ -167,6 +168,13 @@ public interface ArticleMapper {
      * @return 是否删除成功
      */
     int deleteByUuid(@Param("uuid") Integer uuid);
+
+    /**
+     * 查询全部文章（无ban)
+     *
+     * @return list数组
+     */
+    List<Article> searchAllArticles();
 
 
 }
