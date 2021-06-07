@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Transient;
+
 /**
  * @author  setusb
  * @date  2021/5/25 15:40
@@ -43,4 +45,22 @@ public class Critique {
     * 评论是否隐藏
     */
     private Integer hideCritique;
+
+    /**
+     * 评论对应的文章标题
+     */
+    @Transient
+    private String critiqueArticleTitle;
+
+    /**
+     * 评论对应的文章用户
+     */
+    @Transient
+    private String critiqueUserName;
+
+    /**
+     * 字符日期
+     */
+    @Transient
+    private String critiqueDateString;
 }

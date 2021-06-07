@@ -40,8 +40,8 @@
                                         class="layui-nav-img"><span id="unames">null</span></a>
         <dl class="layui-nav-child">
             <%--<dd><a href="/default/userinfo">个人信息</a></dd>--%>
-            <dd><a href="/default/userinfo"">个人信息</a></dd>
-            <dd><a href="#">安全管理</a></dd>
+            <dd><a href="/default/userinfo">个人信息</a></dd>
+            <dd><a href="/default/aqgl">安全管理</a></dd>
             <c:if test="${abc == 2}">
                 <dd><a href="/backstagelogin" style="color: blueviolet">博客后台</a></dd>
             </c:if>

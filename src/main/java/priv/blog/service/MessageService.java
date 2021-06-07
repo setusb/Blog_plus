@@ -1,8 +1,8 @@
 package priv.blog.service;
 
-import org.apache.ibatis.annotations.Param;
 import priv.blog.pojo.Message;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -51,4 +51,29 @@ public interface MessageService {
      * @return 是否删除成功
      */
     int deleteByUuidUser(Integer uuidUser);
+
+
+    /**
+     * 返回json留言格式数据
+     *
+     * @return 任意对象
+     */
+    Object messageList();
+
+    /**
+     * 编辑留言内容
+     *
+     * @param uuid 留言id
+     * @param nr   留言内容
+     * @return 任意对象
+     */
+    HashMap<String, Object> messageModify(int uuid, String nr);
+
+    /**
+     * 删除留言功能(全部)
+     *
+     * @param uuid 留言uuid
+     * @return Object 对象 (可以使用instanceof检验是不是想要的对象）
+     */
+    Object critiqueDeleteAll(int uuid);
 }

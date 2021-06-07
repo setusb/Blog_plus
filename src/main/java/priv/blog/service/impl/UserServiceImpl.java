@@ -4,6 +4,7 @@ import priv.blog.dao.UserMapper;
 import priv.blog.pojo.User;
 import priv.blog.service.UserService;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -86,6 +87,21 @@ public class UserServiceImpl implements UserService {
             return 0;
         }
         return s;
+    }
+
+    @Override
+    public HashMap<String, Object> updateUserPassword(int uuid, String pwd) {
+        HashMap<String, Object> hashMap = new HashMap<>(1);
+        List<User> list = userMapper.selectByPrimaryKey(uuid);
+        for (User user : list) {
+            user.setPassword(pwd);
+            if (userMapper.updateByPrimaryKey(user) > 0) {
+                hashMap.put("a", true);
+            } else {
+                hashMap.put("a", false);
+            }
+        }
+        return hashMap;
     }
 
     @Override

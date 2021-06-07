@@ -1,4 +1,5 @@
 package priv.blog.dao;
+import java.util.Date;
 
 import org.apache.ibatis.annotations.Param;
 import priv.blog.pojo.Critique;
@@ -64,13 +65,28 @@ public interface CritiqueMapper {
      */
     Integer countByUuidArticle(@Param("uuidArticle")Integer uuidArticle);
 
-
-
     /**
      * 通过uuid删除用户的所有评论
      *
      * @return 是否删除成功
      */
     int deleteByUuidUser(@Param("uuidUser") Integer uuidUser);
+
+    /**
+     * 查询全部评论信息
+     *
+     * @return list集合
+     */
+    List<Critique> queryAllCommentInformation();
+
+    /**
+     * 通过uuid修改评论信息
+     *
+     * @param uuidCritique 文章uuid
+     * @param updated 新的文章实体类
+     *
+     * @return list集合
+     */
+    int modifyByUuidCritique(@Param("updated")Critique updated,@Param("uuidCritique")Integer uuidCritique);
 
 }

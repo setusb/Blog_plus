@@ -155,4 +155,24 @@ public class cs {
             e.printStackTrace();
         }
     }
+
+    @Test
+    public void eq() {
+        String a = "123";
+        System.out.println(a.equals(new String("123")));
+
+        System.out.println(a.hashCode() == new String("124").hashCode());
+
+        System.out.println(a.hashCode());
+        System.out.println(new String("124").hashCode());
+
+        Integer b = 1;
+        double b1 = 1;
+
+        System.out.println(b == b1);
+
+        System.out.println(b1);
+
+        System.out.println(b instanceof Integer);
+    }
 }

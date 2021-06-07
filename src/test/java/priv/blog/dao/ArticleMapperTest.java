@@ -65,6 +65,19 @@ public class ArticleMapperTest {
 
     @Test
     public void testNumberOfArticles() {
-        System.out.println(mapper.numberOfArticles(0));;
+        System.out.println(mapper.numberOfArticles(0));
+    }
+
+    @Test
+    public void testListByAll1() {
+        List<Article> list = mapper.listByAll();
+        Runnable runnable = () -> {
+            for (int i = 0; i < 100; i++) {
+                System.out.println("线程运行");
+            }
+        };
+
+        new Thread(runnable).start();
+         list.forEach(article -> System.out.println(article.getArticleTitle()));
     }
 }

@@ -6,9 +6,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import oshi.SystemInfo;
 import priv.blog.pojo.Article;
 import priv.blog.pojo.User;
@@ -306,7 +304,7 @@ public class BackStageController {
 
         hashMap.put("code", 0);
         hashMap.put("msg", "");
-        hashMap.put("count", userService.countAll());
+        hashMap.put("count", articleService.countAllArticles());
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -363,7 +361,7 @@ public class BackStageController {
 
     @PostMapping("/backstageindex/articleadd")
     @ResponseBody
-    public String articleAdd(HttpSession session,@Param("title") String title, @Param("target") String target, @Param("content") String content) {
+    public String articleAdd(HttpSession session, @Param("title") String title, @Param("target") String target, @Param("content") String content) {
         HashMap<String, Object> hashMap = new HashMap<>(1);
 
         if (articleService.adminAddArticle(title, target, content, session)) {
@@ -377,7 +375,7 @@ public class BackStageController {
 
     @PostMapping("/backstageindex/articlereview")
     @ResponseBody
-    public String articleReview(@Param("uuid") int uuid, @Param("is") int is) {
+    public String articleReview(@Param("uuid") int uuid, @Param("is") int is, @Param("length") int length) {
         HashMap<String, Object> hashMap = new HashMap<>(1);
 
         if (articleService.articleReviewAndRevision(uuid, is)) {
@@ -387,5 +385,55 @@ public class BackStageController {
         }
 
         return JSON.toJSONString(hashMap);
+    }
+
+    @GetMapping("/backstageindex/critiquemanagement")
+    public String critiqueManagement(HttpSession session, Model model) {
+        String username = (String) session.getAttribute("admin");
+        model.addAttribute("username", username);
+        return "backstage/critiqueManagement";
+    }
+
+    @GetMapping("/backstageindex/critiquelist")
+    @ResponseBody
+    public String critiqueList() {
+        return JSON.toJSONString(articleService.critiqueList());
+    }
+
+    @PostMapping("/backstageindex/critiquemodification")
+    @ResponseBody
+    public String critiqueModification(@Param("uuid") int uuid, @Param("content") String content) {
+        return JSON.toJSONString(articleService.critiqueModification(uuid, content));
+    }
+
+    @RequestMapping(path = "/backstageindex/critiqueDeleteAll", method = RequestMethod.POST)
+    @ResponseBody
+    public String critiqueDeleteAll(@Param("uuid") int uuid) {
+        return JSON.toJSONString(articleService.critiqueDeleteAll(uuid));
+    }
+
+    @GetMapping("/backstageindex/messagemanagement")
+    public String messageManagement(HttpSession session, Model model) {
+        String username = (String) session.getAttribute("admin");
+        model.addAttribute("username", username);
+        return "backstage/messageManagement";
+    }
+
+    @GetMapping("/backstageindex/messagelist")
+    @ResponseBody
+    public String messageList() {
+        return JSON.toJSONString(messageService.messageList());
+    }
+
+    @PostMapping("/backstageindex/messagemodification")
+    @ResponseBody
+    public String messageModifyCation(@Param("uuid") int uuid, @Param("nr") String nr) {
+        return JSON.toJSONString(messageService.messageModify(uuid, nr));
+    }
+
+    @PostMapping("/backstageindex/messageDeleteAll")
+    @ResponseBody
+    public String messageDeleteAll(@Param("uuid")int uuid) {
+        return JSON.toJSONString(messageService.critiqueDeleteAll(uuid));
     }
 }

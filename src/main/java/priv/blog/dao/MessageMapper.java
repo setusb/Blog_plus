@@ -44,7 +44,6 @@ public interface MessageMapper {
      */
     Integer countByUuidUser(@Param("uuidUser") Integer uuidUser);
 
-
     /**
      * 通过uuid删除用户对应下的留言
      *
@@ -52,5 +51,27 @@ public interface MessageMapper {
      */
     int deleteByUuidUser(@Param("uuidUser") Integer uuidUser);
 
+    /**
+     * 查询数据库全部留言数据
+     *
+     * @return list数组
+     */
+    List<Message> selectByAll();
 
+    /**
+     * 通过留言uuid更新留言内容
+     *
+     * @param messageContent 留言
+     * @param uuidMessage    留言uuid
+     * @return 是否更新成功
+     */
+    int updateByUuidMessage(@Param("messageContent") String messageContent, @Param("uuidMessage") Integer uuidMessage);
+
+    /**
+     * 通过文章uuid删除
+     *
+     * @param uuidMessage 文章uuid
+     * @return 是否删除成功
+     */
+    int deleteByUuidMessage(@Param("uuidMessage") Integer uuidMessage);
 }

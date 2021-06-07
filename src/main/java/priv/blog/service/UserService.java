@@ -3,6 +3,7 @@ package priv.blog.service;
 import org.apache.ibatis.annotations.Param;
 import priv.blog.pojo.User;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -100,4 +101,11 @@ public interface UserService {
      */
     int deleteByPrimaryKey(Integer uuid);
 
+    /**
+     * 通过uuid更新用户密码
+     *
+     * @param uuid uuid
+     * @return hashmap
+     */
+    HashMap<String, Object> updateUserPassword(int uuid, String pwd);
 }

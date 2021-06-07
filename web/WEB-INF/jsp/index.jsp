@@ -85,7 +85,7 @@
             <li>></li>
         </a>
         <li style="width: auto;margin-left: 1px;line-height: 21px;padding:0 4px;font-size: 11px;color: white ">
-            总页数: ${pageNum.size()}</li>
+            总页数: ${totalPageNum}</li>
     </ul>
 </div>
 <%--<div id="demo1"></div>--%>
@@ -282,12 +282,14 @@
 
         var sb = ${article.size()};
         if (sb === 0) {
-/*            window.location.href = "/pageNotFound"*/
+            //博客没有文章要怎么处理 mi: 还没想好怎么写！
         }
-
 
         $(document).keyup(function (event) {
             if (event.keyCode === 13) {
+                if ($('#searchContent').val() !== '') {
+                    searchClick();
+                }
                 if ($('#pageRequest').val() !== '') {
                     reqpage($('#pageRequest').val());
                 }
@@ -386,7 +388,7 @@
     function logIn() {
         if ($('#username').val() !== '' && $("#password").val() !== '') {
             $.ajax({
-                async: false,
+                async: true,
                 type: "POST",
                 url: "/userjson",
                 contentType: "application/x-www-form-urlencoded; charset=utf-8",
@@ -460,7 +462,7 @@
 
     function automaticLogIn(name, pwd) {
         $.ajax({
-            async: false,
+            async: true,
             type: "POST",
             url: "/userjson",
             contentType: "application/x-www-form-urlencoded; charset=utf-8",

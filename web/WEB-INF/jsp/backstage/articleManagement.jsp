@@ -20,7 +20,7 @@
         <ul class="layui-nav layui-layout-left">
             <li class="layui-nav-item"><a href="/index">博客主页</a></li>
             <li class="layui-nav-item"><a href="/default/userinfo">个人中心</a></li>
-            <li class="layui-nav-item"><a href="">安全管理</a></li>
+            <li class="layui-nav-item"><a href="/default/aqgl">安全管理</a></li>
             <li class="layui-nav-item">
                 <a href="javascript:">更多</a>
                 <dl class="layui-nav-child">
@@ -60,14 +60,8 @@
                     <dl class="layui-nav-child">
                         <dd><a href="/backstageindex/usermanagement">用户管理</a></dd>
                         <dd><a href="/backstageindex/articlemanagement" style="color: #978502">文章管理</a></dd>
-                        <dd><a href="javascript:">评论管理</a></dd>
-                        <dd><a href="javascript:">留言管理</a></dd>
-                    </dl>
-                </li>
-                <li class="layui-nav-item">
-                    <a href="javascript:">开关操作</a>
-                    <dl class="layui-nav-child">
-                        <dd><a href="javascript:">全部开关</a></dd>
+                        <dd><a href="/backstageindex/critiquemanagement">评论管理</a></dd>
+                        <dd><a href="/backstageindex/messagemanagement">留言管理</a></dd>
                     </dl>
                 </li>
             </ul>
@@ -102,14 +96,6 @@
 <script src="../../../resources/quill/quill.js" charset="UTF-8"></script>
 <link href="../../../resources/quill/quill.snow.css" rel="stylesheet">
 <script>
-
-    layui.use(['element', 'layer', 'util'], function () {
-        var element = layui.element
-            , layer = layui.layer
-            , util = layui.util
-            , $ = layui.$;
-    });
-
     layui.use('table', function () {
         var table = layui.table;
         table.render({
@@ -350,8 +336,9 @@
                         break;
                     } else if (data.length > 0) {
                         $.each(data, function (index, obj) {
-                            articleReview(obj.articleUuid, 0, table);
+                            articleReview(obj.articleUuid, 0, data.length);
                         });
+                        table.reload('test');
                         break;
                     }
                     break;
@@ -364,8 +351,9 @@
                         break;
                     } else if (data.length > 0) {
                         $.each(data, function (index, obj) {
-                            articleReview(obj.articleUuid, 1, table);
+                            articleReview(obj.articleUuid, 1, data.length);
                         });
+                        table.reload('test');
                         break;
                     }
                     break;
@@ -380,12 +368,13 @@
             contentType: "application/x-www-form-urlencoded; charset=utf-8",
             data: {
                 "uuid": uuid,
-                "is": is
+                "is": is,
+                "length": obj
             },
             dataType: "json",
             success: function (response) {
                 if (response['a']) {
-                    obj.reload('test');
+                    /*obj.reload('test');*/
                 } else {
                     layer.alert("审核未知错误，请查看后台报错！")
                 }

@@ -6,9 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import priv.blog.pojo.User;
 import priv.blog.service.UserService;
 
@@ -174,4 +172,15 @@ public class UserController {
         return JSON.toJSONString(hashMap);
     }
 
+    @GetMapping("/default/aqgl")
+    public String aqgl() {
+        return "default/safetyManagement";
+    }
+
+    @PostMapping("/default/xgmm")
+    @ResponseBody
+    public String xgmm(HttpSession session, @Param("pwd") String pwd) {
+        int uuid = (int) session.getAttribute("loginSuccessful");
+        return JSON.toJSONString(userService.updateUserPassword(uuid, pwd));
+    }
 }

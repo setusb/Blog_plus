@@ -56,17 +56,29 @@ public class ArticleController {
 
     private void getDecimalRoundedFloatingPoint(Model model, float num, float b) {
         float a = num / b;
+        int aInt = (int) Math.ceil(a);
 
         List<Page> list = new ArrayList<>();
 
-        for (int i = 0; i < Math.ceil(a); i++) {
-            Page p = new Page();
-            p.setPage(i);
-            list.add(p);
+        if (aInt >= 10) {
+            for (int i = 0; i < 10; i++) {
+                Page p = new Page();
+                p.setPage(i);
+                list.add(p);
+            }
+        }
+
+        if (aInt < 10) {
+            for (int i = 0; i < 9; i++) {
+                Page p = new Page();
+                p.setPage(i);
+                list.add(p);
+            }
         }
 
         model.addAttribute("articleNum", num);
         model.addAttribute("pageNum", list);
+        model.addAttribute("totalPageNum", aInt);
     }
 
     private void judgeCharacterLengthCycleProcessing(Model model, List<Article> article) {

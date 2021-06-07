@@ -9,7 +9,9 @@ import priv.blog.pojo.Critique;
 import priv.blog.service.ArticleService;
 
 import javax.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -211,6 +213,56 @@ public class ArticleServiceImpl implements ArticleService {
         article.setArticleUuid(uuid);
         article.setArticleBan(is);
         return articleMapper.updateByPrimaryKeySelective(article) > 0;
+    }
+
+    @Override
+    public Object critiqueDeleteAll(int uuid) {
+        return critiqueMapper.deleteByUuidCritique(uuid) > 0 ? new HashMap<>().put("a", true) : new HashMap<>().put("a", false);
+    }
+
+    @Override
+    public HashMap<String, Object> critiqueModification(int uuid, String nr) {
+        HashMap<String, Object> hashMap = new HashMap<>(10);
+
+        Critique critique = new Critique();
+        critique.setContentCritique(nr);
+
+        try {
+            if (critiqueMapper.modifyByUuidCritique(critique, uuid) > 0) {
+                hashMap.put("a", true);
+            } else {
+                hashMap.put("a", false);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            hashMap.put("a", false);
+        }
+
+        return hashMap;
+    }
+
+    @Override
+    public HashMap<String, Object> critiqueList() {
+
+        HashMap<String, Object> hashMap = new HashMap<>(10);
+
+        hashMap.put("code", 0);
+        hashMap.put("msg", "");
+        hashMap.put("count", critiqueMapper.totalNumberOfComments());
+
+        List<Critique> list = critiqueMapper.queryAllCommentInformation();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+        for (Critique critique : list) {
+            critique.setCritiqueDateString(sdf.format(new Date(critique.getDateCritique().toString())));
+            critique.setCritiqueUserName(userMapper.returnUserData(critique.getUuidUser()).getUsername());
+            critique.setCritiqueArticleTitle(articleMapper.selectByPrimaryKey(critique.getUuidArticle()).getArticleTitle());
+        }
+
+        hashMap.put("data", list);
+
+        return hashMap;
     }
 
     @Override

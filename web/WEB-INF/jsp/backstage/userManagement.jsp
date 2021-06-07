@@ -17,26 +17,20 @@
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header">
         <div class="layui-logo layui-bg-black" style="font-size: 24px">个人博客后台</div>
-        <!-- 头部区域（可配合layui 已有的水平导航） -->
         <ul class="layui-nav layui-layout-left">
-            <!-- 移动端显示 -->
-            <%--            <li class="layui-nav-item layui-show-xs-inline-block layui-hide-sm" lay-header-event="menuLeft">
-                            <i class="layui-icon layui-icon-spread-left"></i>
-                        </li>--%>
-
-            <li class="layui-nav-item"><a href="/index">博客主页</a></li>
-            <li class="layui-nav-item"><a href="/default/userinfo">个人中心</a></li>
-            <li class="layui-nav-item"><a href="">安全管理</a></li>
-            <li class="layui-nav-item">
-                <a href="javascript:">更多</a>
-                <dl class="layui-nav-child">
-                    <dd><a href="javascript:location.reload();">刷新数据</a></dd>
-                    <dd><a href="javascript:setTimeout(function (){
+        <li class="layui-nav-item"><a href="/index">博客主页</a></li>
+        <li class="layui-nav-item"><a href="/default/userinfo">个人中心</a></li>
+        <li class="layui-nav-item"><a href="/default/aqgl">安全管理</a></li>
+        <li class="layui-nav-item">
+            <a href="javascript:">更多</a>
+            <dl class="layui-nav-child">
+                <dd><a href="javascript:location.reload();">刷新数据</a></dd>
+                <dd><a href="javascript:setTimeout(function (){
                     alert('缓存清理完成');
                     location.reload();
                     },2000)">清理缓存</a></dd>
-                </dl>
-            </li>
+            </dl>
+        </li>
         </ul>
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item layui-hide layui-show-md-inline-block">
@@ -49,17 +43,11 @@
                     <dd><a href="/backstagelogout">注销所有</a></dd>
                 </dl>
             </li>
-            <%--            <li class="layui-nav-item" lay-header-event="menuRight" lay-unselect>
-                            <a href="javascript:;">
-                                <i class="layui-icon layui-icon-more-vertical"></i>
-                            </a>
-                        </li>--%>
         </ul>
     </div>
 
     <div class="layui-side layui-bg-black">
         <div class="layui-side-scroll">
-            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
             <ul class="layui-nav layui-nav-tree" lay-filter="test">
                 <li class="layui-nav-item">
                     <a class="" href="javascript:">总体概览</a>
@@ -72,14 +60,8 @@
                     <dl class="layui-nav-child">
                         <dd><a href="/backstageindex/usermanagement" style="color: #978502">用户管理</a></dd>
                         <dd><a href="/backstageindex/articlemanagement">文章管理</a></dd>
-                        <dd><a href="javascript:">评论管理</a></dd>
-                        <dd><a href="javascript:">留言管理</a></dd>
-                    </dl>
-                </li>
-                <li class="layui-nav-item">
-                    <a href="javascript:">开关操作</a>
-                    <dl class="layui-nav-child">
-                        <dd><a href="javascript:">全部开关</a></dd>
+                        <dd><a href="/backstageindex/critiquemanagement">评论管理</a></dd>
+                        <dd><a href="/backstageindex/messagemanagement">留言管理</a></dd>
                     </dl>
                 </li>
             </ul>
@@ -93,7 +75,7 @@
             <script type="text/html" id="toolbarDemo">
                 <div class="layui-btn-container">
                     <button class="layui-btn layui-btn-sm" lay-event="addCheckData">添加</button>
-                    <button class="layui-btn layui-btn-sm" lay-event="getCheckData">删除</button>
+                    <button class="layui-btn layui-btn-sm" lay-event="getCheckData">批量删除</button>
                     <button class="layui-btn layui-btn-sm" lay-event="refresh">刷新</button>
                 </div>
             </script>
@@ -103,56 +85,15 @@
                 <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
             </script>
         </div>
-
-        <%--        <div>
-                    <div class="layui-panel"
-                         style="width: 920px;margin: 25px auto 0;height: 100px;border-radius: 5px">
-                        <div style="padding: 30px;"></div>
-                    </div>
-                </div>--%>
     </div>
 
     <div class="layui-footer" style="text-align: right">
-        <!-- 底部固定区域 -->
         2021 - 2021 个人博客
     </div>
 </div>
 <script>
-
-
-    layui.use(['element', 'layer', 'util'], function () {
-        var element = layui.element
-            , layer = layui.layer
-            , util = layui.util
-            , $ = layui.$;
-    });
-
     layui.use('table', function () {
         var table = layui.table;
-
-        /*        setInterval(function () {
-                    table.render({
-                        elem: '#test'
-                        , url: '/backstageindex/userlist'
-                        , toolbar: '#toolbarDemo'
-                        , height: '404px'
-                        ,unresize: true
-                        , cols: [[
-                            {type: 'checkbox', width: 60},
-                            {field: 'uuid', width: 80, title: 'uuid', sort: true}
-                            , {field: 'username', width: 120, title: '账号'}
-                            , {field: 'nickname', width: 120, title: '昵称'}
-                            , {field: 'password', width: 120, title: '密码'}
-                            , {field: 'sex', title: '性别', width: 80}
-                            , {field: 'userinfo', Width: 180, title: '用户信息'}
-                            , {field: 'authoritystring', width: 80, title: '权限'}
-                            , {field: 'verification', width: 100, title: '贡献点', sort: true}
-                            , {field: 'datestring', width: 110, title: '注册日期'}
-                            , {fixed: 'right', title: '操作', toolbar: '#barDemo', width: 120}
-                        ]]
-                        , page: false,
-                    });
-                }, 1000);*/
 
         table.render({
             elem: '#test'
@@ -191,7 +132,7 @@
             } else if (obj.event === 'edit') {
                 var setb = layer.open({
                     type: 1,
-                    anim: 2,
+                    anim: 0,
                     /*                    maxmin: true,*/
                     resize: false,
                     title: false,
@@ -317,7 +258,7 @@
                 case 'addCheckData':
                     var indexs = layer.open({
                         type: 1,
-                        anim: 2,
+                        anim: 0,
                         resize: false,
                         title: false,
                         closeBtn: 2,
